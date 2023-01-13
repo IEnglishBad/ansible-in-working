@@ -1,0 +1,9 @@
+---
+- hosts: kall
+  tasks:
+  - name: disables seclinux
+    lineinfile:
+       path: /etc/selinux/config
+       regexp: '^SELINUX='
+       line: SELINUX=disabled
+   
