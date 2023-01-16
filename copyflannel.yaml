@@ -1,0 +1,14 @@
+---
+- hosts: knode
+  tasks:
+  - name: mkdir Flannel folder
+    command: mkdir -p /opt/bin
+
+  - name: mkdir Flannel folder
+    ansible.builtin.copy:
+     src: /opt/bin/flanneld
+     dest: /opt/bin/flanneld
+     owner: root
+     group: root
+     mode: '0755'
+

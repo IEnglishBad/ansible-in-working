@@ -1,0 +1,16 @@
+---
+- hosts: knode
+  tasks:
+  - name: Install yum-utils
+    yum:
+      name: yum-utils
+      state: latest 
+  - name:  Add yum docker repo 
+    shell: yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+  
+  - name: Add kubelet repo
+    copy:
+      src: /etc/yum.repos.d/kubernetes.repo
+      dest: /etc/yum.repos.d/kubernetes.repo 
+
+
