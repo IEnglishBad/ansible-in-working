@@ -1,0 +1,36 @@
+---
+- hosts: knode
+  tasks:
+  - name: Install containerd.io 
+    yum:
+      name: containerd.io
+      state: latest 
+  - name: generate containerd config and change it
+    shell: containerd  config default > /etc/containerd/config.toml
+  
+  - name: replace image registrys
+    lineinfile:
+      path: /etc/containerd/config.toml
+      regexp: 'sandbox_image =.*'
+      line: sandbox_image = "registry.aliyuncs.com/google_containers/pause:3.6"
+      
+  - name: config systemd cgroup driver
+    lineinfile:
+      path: /etc/containerd/config.toml
+      # search_string: 'SystemdCgroup = false'
+      regexp: 'SystemdCgroup = false'
+      line: SystemdCgroup = true
+
+  - name: config containerd store path
+    lineinfile:
+      path: /etc/containerd/config.toml
+      regexp: '/var/lib/containerd'
+      line: root = "/data/containerd"
+
+
+
+  - name: systemctl enable containerd
+    service: 
+      name: containerd
+      state: started
+      enabled: yes
